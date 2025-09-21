@@ -2,41 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Indian Civic Government Theme - Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Indian Tricolor + Government Theme */
+    --background: 0 0% 98%;
+    --foreground: 218 27% 15%;
 
+    /* Cards & Surfaces */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 218 27% 15%;
+    --card-border: 210 20% 90%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Indian Saffron */
+    --saffron: 24 100% 50%;
+    --saffron-light: 24 100% 95%;
+    --saffron-dark: 24 100% 40%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Indian Green */
+    --indian-green: 120 100% 25%;
+    --indian-green-light: 120 60% 95%;
+    --indian-green-dark: 120 100% 20%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Government Navy Blue */
+    --navy: 218 100% 25%;
+    --navy-light: 218 60% 95%;
+    --navy-dark: 218 100% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Primary - Navy Blue */
+    --primary: 218 100% 25%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 218 100% 30%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Saffron */
+    --secondary: 24 100% 50%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 24 100% 45%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Success - Indian Green */
+    --success: 120 100% 25%;
+    --success-foreground: 0 0% 100%;
+    --success-light: 120 60% 95%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Accent */
+    --accent: 24 100% 95%;
+    --accent-foreground: 218 27% 15%;
 
-    --radius: 0.5rem;
+    /* Muted */
+    --muted: 210 20% 96%;
+    --muted-foreground: 218 15% 50%;
+
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Border & Input */
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: 218 100% 25%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--navy)), hsl(var(--navy-dark)));
+    --gradient-saffron: linear-gradient(135deg, hsl(var(--saffron)), hsl(var(--saffron-dark)));
+    --gradient-tricolor: linear-gradient(180deg, hsl(var(--saffron)) 0%, hsl(0 0% 100%) 33%, hsl(var(--indian-green)) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(218 27% 15% / 0.05);
+    --shadow-md: 0 4px 8px -2px hsl(218 27% 15% / 0.1);
+    --shadow-lg: 0 10px 25px -3px hsl(218 27% 15% / 0.1);
+    --shadow-civic: 0 8px 32px -8px hsl(var(--navy) / 0.25);
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +138,66 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-inter;
+  }
+}
+
+@layer components {
+  /* Civic Component Variants */
+  .btn-civic {
+    @apply bg-primary text-primary-foreground font-medium rounded-xl px-6 py-3 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95;
+  }
+
+  .btn-saffron {
+    @apply bg-secondary text-secondary-foreground font-medium rounded-xl px-6 py-3 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95;
+  }
+
+  .btn-success {
+    @apply bg-success text-success-foreground font-medium rounded-xl px-6 py-3 shadow-md hover:shadow-lg transition-all duration-200 active:scale-95;
+  }
+
+  .card-civic {
+    @apply bg-card border border-card-border rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200;
+  }
+
+  .badge-status {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  .badge-pending {
+    @apply badge-status bg-amber-100 text-amber-800;
+  }
+
+  .badge-assigned {
+    @apply badge-status bg-blue-100 text-blue-800;
+  }
+
+  .badge-resolved {
+    @apply badge-status bg-green-100 text-green-800;
+  }
+
+  .gradient-header {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-tricolor {
+    background: var(--gradient-tricolor);
+  }
+
+  .text-gradient {
+    background: var(--gradient-saffron);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@layer utilities {
+  .shadow-civic {
+    box-shadow: var(--shadow-civic);
+  }
+
+  .font-inter {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 }
