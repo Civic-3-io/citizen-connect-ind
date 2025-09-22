@@ -14,12 +14,14 @@ interface Profile {
   full_name: string | null;
   phone: string | null;
   address: string | null;
+  tokens: number;
+  level: string;
   created_at: string;
 }
 
 const Profile = () => {
   const { user, signOut } = useAuth();
-  const { toast } = useToast();
+  const { t } = useTranslation();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 

@@ -1,18 +1,20 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Map, Plus, FileText, Info, Wifi, WifiOff } from 'lucide-react';
+import { Home, Map, Plus, FileText, Coins, Info, Wifi } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import ashokaChakra from '@/assets/ashoka-chakra.png';
 
 const Navigation = () => {
   const location = useLocation();
+  const { t } = useTranslation();
   
   const navItems = [
-    { path: '/', icon: Home, label: 'Home', key: 'home' },
+    { path: '/', icon: Home, label: t('home'), key: 'home' },
     { path: '/map', icon: Map, label: 'Map', key: 'map' },
-    { path: '/report', icon: Plus, label: 'Report', key: 'report', isMainAction: true },
-    { path: '/my-issues', icon: FileText, label: 'My Issues', key: 'my-issues' },
-    { path: '/offline', icon: WifiOff, label: 'Offline', key: 'offline' },
+    { path: '/report', icon: Plus, label: t('report'), key: 'report', isMainAction: true },
+    { path: '/my-issues', icon: FileText, label: t('myIssues'), key: 'my-issues' },
+    { path: '/tokens', icon: Coins, label: t('rewards'), key: 'rewards' },
   ];
 
   const isActive = (path: string) => {
@@ -28,7 +30,7 @@ const Navigation = () => {
           <div className="flex items-center space-x-3">
             <img src={ashokaChakra} alt="Government of India" className="w-8 h-8" />
             <div>
-              <h1 className="text-white font-semibold text-lg">Civic Connect</h1>
+              <h1 className="text-white font-semibold text-lg">{t('appTitle')}</h1>
               <p className="text-navy-light text-xs">Government of India</p>
             </div>
           </div>

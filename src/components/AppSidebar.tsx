@@ -1,5 +1,7 @@
-import { User, FileText, Coins, Info, Menu } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { User, FileText, Coins, Info, WifiOff, Home, MapPin, Users } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import {
   Sidebar,
   SidebarContent,
@@ -12,20 +14,49 @@ import {
   SidebarHeader,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import ashokaChakra from '@/assets/ashoka-chakra.png';
 
-const sidebarItems = [
-  { title: "Profile", url: "/profile", icon: User },
-  { title: "My Issues", url: "/my-issues", icon: FileText },
-  { title: "Tokens", url: "/tokens", icon: Coins },
-  { title: "About Us", url: "/about", icon: Info },
-];
-
-export function AppSidebar() {
+const AppSidebar = () => {
   const { state } = useSidebar();
   const location = useLocation();
+  const { t } = useTranslation();
+  const { user } = useAuth();
+  const [userTokens, setUserTokens] = useState<number>(0);
+  
   const currentPath = location.pathname;
   const collapsed = state === "collapsed";
+
+  const sidebarItems = [
+    { title: t('home'), url: "/", icon: Home },
+    { title: t('reportIssue'), url: "/report", icon: FileText },
+    { title: "Map View", url: "/map", icon: MapPin },
+    { title: t('myIssues'), url: "/my-issues", icon: FileText },
+    { title: t('community'), url: "/community", icon: Users },
+    { title: t('offline'), url: "/offline", icon: WifiOff },
+    { title: t('about'), url: "/about", icon: Info },
+    { title: t('profile'), url: "/profile", icon: User },
+    { title: t('tokens'), url: "/tokens", icon: Coins },
+  ];
+
+  useEffect(() => {
+    const fetchUserTokens = async () => {
+      if (user) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('tokens')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (data && !error) {
+          setUserTokens(data.tokens || 0);
+        }
+      }
+    };
+
+    fetchUserTokens();
+  }, [user]);
 
   const isActive = (path: string) => {
     if (path === '/') return currentPath === '/';
@@ -47,7 +78,7 @@ export function AppSidebar() {
           <img src={ashokaChakra} alt="Government of India" className="w-8 h-8 flex-shrink-0" />
           {!collapsed && (
             <div className="min-w-0">
-              <h2 className="text-sm font-semibold text-primary truncate">Civic Connect</h2>
+              <h2 className="text-sm font-semibold text-primary truncate">{t('appTitle')}</h2>
               <p className="text-xs text-muted-foreground truncate">Government of India</p>
             </div>
           )}
@@ -82,10 +113,10 @@ export function AppSidebar() {
               <div className="p-4 bg-gradient-civic rounded-lg mx-2 mb-2">
                 <div className="flex items-center space-x-2 text-white mb-2">
                   <Coins className="w-4 h-4" />
-                  <span className="text-sm font-medium">Current Tokens</span>
+                  <span className="text-sm font-medium">{t('tokens')}</span>
                 </div>
-                <div className="text-2xl font-bold text-white">1,250</div>
-                <p className="text-xs text-white/80">Earned from 15 reports</p>
+                <div className="text-2xl font-bold text-white">{userTokens.toLocaleString()}</div>
+                <p className="text-xs text-white/80">{t('totalEarnings')}</p>
               </div>
             </SidebarGroupContent>
           </SidebarGroup>
@@ -93,4 +124,6 @@ export function AppSidebar() {
       </SidebarContent>
     </Sidebar>
   );
-}
+};
+
+export { AppSidebar };

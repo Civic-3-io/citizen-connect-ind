@@ -1,5 +1,4 @@
 import React from "react";
-import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -9,6 +8,7 @@ import { AppSidebar } from "./components/AppSidebar";
 import { AuthProvider } from "./contexts/AuthContext";
 import Navigation from "./components/Navigation";
 import ProtectedRoute from "./components/ProtectedRoute";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 import Home from "./pages/Home";
 import MapView from "./pages/MapView";
 import ReportIssue from "./pages/ReportIssue";
@@ -26,7 +26,6 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
@@ -38,9 +37,12 @@ const App = () => (
                   <div className="min-h-screen flex w-full bg-background">
                     <AppSidebar />
                     <div className="flex-1 flex flex-col">
-                      <header className="h-12 flex items-center border-b bg-card px-4">
-                        <SidebarTrigger className="mr-2" />
-                        <h1 className="text-lg font-semibold text-primary">Civic Connect</h1>
+                      <header className="h-12 flex items-center justify-between border-b bg-card px-4">
+                        <div className="flex items-center">
+                          <SidebarTrigger className="mr-2" />
+                          <h1 className="text-lg font-semibold text-primary">Civic Connect</h1>
+                        </div>
+                        <LanguageSwitcher />
                       </header>
                       <main className="flex-1 relative">
                         <Navigation />

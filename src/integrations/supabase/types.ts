@@ -14,13 +14,162 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          created_at: string
+          icon: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          icon: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          icon?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      comments: {
+        Row: {
+          comment_text: string
+          created_at: string
+          id: string
+          issue_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment_text: string
+          created_at?: string
+          id?: string
+          issue_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment_text?: string
+          created_at?: string
+          id?: string
+          issue_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comments_issue_id_fkey"
+            columns: ["issue_id"]
+            isOneToOne: false
+            referencedRelation: "issues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      issue_upvotes: {
+        Row: {
+          created_at: string
+          id: string
+          issue_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          issue_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          issue_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "issue_upvotes_issue_id_fkey"
+            columns: ["issue_id"]
+            isOneToOne: false
+            referencedRelation: "issues"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      issues: {
+        Row: {
+          assigned_to: string | null
+          category_id: string
+          created_at: string
+          description: string | null
+          id: string
+          image_urls: string[] | null
+          is_anonymous: boolean | null
+          latitude: number | null
+          location_text: string | null
+          longitude: number | null
+          priority: string | null
+          status: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          category_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_urls?: string[] | null
+          is_anonymous?: boolean | null
+          latitude?: number | null
+          location_text?: string | null
+          longitude?: number | null
+          priority?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_to?: string | null
+          category_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_urls?: string[] | null
+          is_anonymous?: boolean | null
+          latitude?: number | null
+          location_text?: string | null
+          longitude?: number | null
+          priority?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "issues_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           address: string | null
           created_at: string
           full_name: string | null
           id: string
+          level: string | null
           phone: string | null
+          tokens: number | null
           updated_at: string
           user_id: string
         }
@@ -29,7 +178,9 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          level?: string | null
           phone?: string | null
+          tokens?: number | null
           updated_at?: string
           user_id: string
         }
@@ -38,18 +189,93 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          level?: string | null
           phone?: string | null
+          tokens?: number | null
           updated_at?: string
           user_id?: string
         }
         Relationships: []
+      }
+      rewards: {
+        Row: {
+          cost_in_tokens: number
+          created_at: string
+          description: string
+          id: string
+          is_available: boolean | null
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          cost_in_tokens: number
+          created_at?: string
+          description: string
+          id?: string
+          is_available?: boolean | null
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          cost_in_tokens?: number
+          created_at?: string
+          description?: string
+          id?: string
+          is_available?: boolean | null
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_redeemed_rewards: {
+        Row: {
+          id: string
+          redeemed_at: string
+          reward_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          redeemed_at?: string
+          reward_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          redeemed_at?: string
+          reward_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_redeemed_rewards_reward_id_fkey"
+            columns: ["reward_id"]
+            isOneToOne: false
+            referencedRelation: "rewards"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      grant_tokens_for_action: {
+        Args: {
+          action_type: string
+          target_user_id: string
+          token_amount: number
+        }
+        Returns: Json
+      }
+      redeem_reward: {
+        Args: { reward_uuid: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
