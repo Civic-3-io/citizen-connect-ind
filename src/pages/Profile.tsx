@@ -1,10 +1,85 @@
-import React from 'react';
-import { User, Phone, Mail, MapPin, Calendar, Award } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { User, Phone, Mail, MapPin, Calendar, Award, LogOut } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { Skeleton } from '@/components/ui/skeleton';
+
+interface Profile {
+  id: string;
+  user_id: string;
+  full_name: string | null;
+  phone: string | null;
+  address: string | null;
+  created_at: string;
+}
 
 const Profile = () => {
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (error) {
+          toast({
+            title: "Error loading profile",
+            description: error.message,
+            variant: "destructive"
+          });
+        } else {
+          setProfile(data);
+        }
+      } catch (error: any) {
+        toast({
+          title: "Error loading profile",
+          description: error.message,
+          variant: "destructive"
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [user, toast]);
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-6 max-w-2xl">
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="flex items-center space-x-4">
+              <Skeleton className="w-20 h-20 rounded-full" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-8 w-48" />
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-6 w-40" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-6 max-w-2xl">
       {/* Profile Header */}
@@ -15,14 +90,16 @@ const Profile = () => {
               <User className="w-10 h-10 text-white" />
             </div>
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-primary">Rahul Sharma</h1>
+              <h1 className="text-2xl font-bold text-primary">
+                {profile?.full_name || user?.email || 'User'}
+              </h1>
               <p className="text-muted-foreground">Active Citizen</p>
               <div className="flex items-center space-x-2 mt-2">
                 <Badge variant="secondary" className="bg-indian-green/20 text-indian-green">
                   Verified
                 </Badge>
                 <Badge variant="outline" className="border-saffron text-saffron">
-                  Level 3
+                  Level 1
                 </Badge>
               </div>
             </div>
@@ -41,19 +118,19 @@ const Profile = () => {
         <CardContent className="space-y-4">
           <div className="flex items-center space-x-3">
             <Phone className="w-4 h-4 text-muted-foreground" />
-            <span>+91 98765 43210</span>
+            <span>{profile?.phone || 'Not provided'}</span>
           </div>
           <div className="flex items-center space-x-3">
             <Mail className="w-4 h-4 text-muted-foreground" />
-            <span>rahul.sharma@email.com</span>
+            <span>{user?.email}</span>
           </div>
           <div className="flex items-center space-x-3">
             <MapPin className="w-4 h-4 text-muted-foreground" />
-            <span>Connaught Place, New Delhi, Delhi - 110001</span>
+            <span>{profile?.address || 'Not provided'}</span>
           </div>
           <div className="flex items-center space-x-3">
             <Calendar className="w-4 h-4 text-muted-foreground" />
-            <span>Member since January 2024</span>
+            <span>Member since {new Date(profile?.created_at || '').toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
           </div>
         </CardContent>
       </Card>
@@ -95,6 +172,10 @@ const Profile = () => {
         </Button>
         <Button variant="outline" className="w-full">
           Privacy Settings
+        </Button>
+        <Button variant="destructive" className="w-full" onClick={handleSignOut}>
+          <LogOut className="w-4 h-4 mr-2" />
+          Sign Out
         </Button>
       </div>
     </div>
