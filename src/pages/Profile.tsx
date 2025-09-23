@@ -5,8 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useTranslation } from 'react-i18next';
 
 interface Profile {
   id: string;
@@ -37,19 +38,15 @@ const Profile = () => {
           .maybeSingle();
 
         if (error) {
-          toast({
-            title: "Error loading profile",
+          toast.error("Error loading profile", {
             description: error.message,
-            variant: "destructive"
           });
         } else {
           setProfile(data);
         }
       } catch (error: any) {
-        toast({
-          title: "Error loading profile",
+        toast.error("Error loading profile", {
           description: error.message,
-          variant: "destructive"
         });
       } finally {
         setLoading(false);

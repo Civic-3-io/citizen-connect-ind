@@ -7,10 +7,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 const ReportIssue = () => {
-  const { toast } = useToast();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -61,16 +60,13 @@ const ReportIssue = () => {
           const { latitude, longitude } = position.coords;
           // In a real app, you'd reverse geocode this
           handleInputChange('location', `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
-          toast({
-            title: "Location Added",
+          toast.success("Location Added", {
             description: "GPS coordinates have been added to your report.",
           });
         },
         (error) => {
-          toast({
-            title: "Location Error",
+          toast.error("Location Error", {
             description: "Unable to get your location. Please enter manually.",
-            variant: "destructive"
           });
         }
       );
@@ -81,10 +77,8 @@ const ReportIssue = () => {
     e.preventDefault();
     
     if (!formData.title || !formData.category || !formData.description) {
-      toast({
-        title: "Incomplete Form",
+      toast.error("Incomplete Form", {
         description: "Please fill in all required fields.",
-        variant: "destructive"
       });
       return;
     }
@@ -94,8 +88,7 @@ const ReportIssue = () => {
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    toast({
-      title: "Issue Reported Successfully! 🇮🇳",
+    toast.success("Issue Reported Successfully! 🇮🇳", {
       description: "Your report has been submitted to the concerned authorities. Track ID: CIV-2024-001247",
     });
     

@@ -3,11 +3,10 @@ import { WifiOff, Upload, Trash2, Clock, AlertCircle, CheckCircle } from 'lucide
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 
 const OfflineRequests = () => {
-  const { toast } = useToast();
   const [syncing, setSyncing] = useState(false);
 
   // Mock offline stored requests
@@ -109,8 +108,7 @@ const OfflineRequests = () => {
     const pendingRequests = offlineRequests.filter(req => req.status === 'pending_sync');
     
     if (pendingRequests.length === 0) {
-      toast({
-        title: "Nothing to Sync",
+      toast.info("Nothing to Sync", {
         description: "All offline requests have already been synced.",
       });
       setSyncing(false);
@@ -144,16 +142,14 @@ const OfflineRequests = () => {
     }
 
     setSyncing(false);
-    toast({
-      title: "Sync Complete! 🇮🇳",
+    toast.success("Sync Complete! 🇮🇳", {
       description: `${pendingRequests.length} offline requests have been submitted successfully.`,
     });
   };
 
   const handleDeleteRequest = (requestId: string) => {
     setOfflineRequests(prev => prev.filter(req => req.id !== requestId));
-    toast({
-      title: "Request Deleted",
+    toast.info("Request Deleted", {
       description: "Offline request has been removed from storage.",
     });
   };
