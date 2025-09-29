@@ -34,10 +34,10 @@ const AppSidebar = () => {
     { title: "Map View", url: "/map", icon: MapPin },
     { title: t('myIssues'), url: "/my-issues", icon: FileText },
     { title: t('community'), url: "/community", icon: Users },
+    { title: t('rewards'), url: "/tokens", icon: Coins },
     { title: t('offline'), url: "/offline", icon: WifiOff },
-    { title: t('about'), url: "/about", icon: Info },
     { title: t('profile'), url: "/profile", icon: User },
-    { title: t('tokens'), url: "/tokens", icon: Coins },
+    { title: t('about'), url: "/about", icon: Info },
   ];
 
   useEffect(() => {
@@ -78,8 +78,8 @@ const AppSidebar = () => {
           <img src={ashokaChakra} alt="Government of India" className="w-8 h-8 flex-shrink-0" />
           {!collapsed && (
             <div className="min-w-0">
-              <h2 className="text-sm font-semibold text-primary truncate">{t('appTitle')}</h2>
-              <p className="text-xs text-muted-foreground truncate">Government of India</p>
+              <h2 className="text-sm font-semibold text-primary truncate">Civic.io</h2>
+              <p className="text-xs text-muted-foreground truncate">Government of Jharkhand</p>
             </div>
           )}
         </div>
@@ -113,7 +113,7 @@ const AppSidebar = () => {
               <div className="p-4 bg-gradient-civic rounded-lg mx-2 mb-2">
                 <div className="flex items-center space-x-2 text-white mb-2">
                   <Coins className="w-4 h-4" />
-                  <span className="text-sm font-medium">{t('tokens')}</span>
+                  <span className="text-sm font-medium">{t('rewards')}</span>
                 </div>
                 <div className="text-2xl font-bold text-white">{userTokens.toLocaleString()}</div>
                 <p className="text-xs text-white/80">{t('totalEarnings')}</p>

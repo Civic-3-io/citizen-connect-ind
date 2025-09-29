@@ -30,8 +30,8 @@ const Navigation = () => {
           <div className="flex items-center space-x-3">
             <img src={ashokaChakra} alt="Government of India" className="w-8 h-8" />
             <div>
-              <h1 className="text-white font-semibold text-lg">{t('appTitle')}</h1>
-              <p className="text-navy-light text-xs">Government of India</p>
+              <h1 className="text-white font-semibold text-lg">Civic.io</h1>
+              <p className="text-navy-light text-xs">Government of Jharkhand</p>
             </div>
           </div>
           <div className="flex items-center space-x-2">

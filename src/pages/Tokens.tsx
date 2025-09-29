@@ -124,19 +124,19 @@ const Tokens = () => {
   return (
     <div className="container mx-auto px-4 py-6 max-w-4xl">
       {/* Token Balance */}
-      <Card className="mb-6 bg-gradient-civic text-white">
+      <Card className="mb-6 bg-gradient-to-br from-saffron to-saffron-dark text-white">
         <CardContent className="pt-6">
           <div className="text-center">
-            <Coins className="w-12 h-12 mx-auto mb-4" />
-            <h1 className="text-3xl font-bold mb-2">{userTokens.toLocaleString()} {t('tokens')}</h1>
-            <p className="text-white/80 mb-4">{t('totalEarnings')}</p>
+            <Coins className="w-12 h-12 mx-auto mb-4 text-white" />
+            <h1 className="text-3xl font-bold mb-2 text-white">{userTokens.toLocaleString()} Tokens</h1>
+            <p className="text-white mb-4">Total earnings from civic contributions</p>
             
-            <div className="bg-white/20 rounded-lg p-4">
-              <div className="flex justify-between text-sm mb-2">
-                <span>{t('nextLevel')}</span>
-                <span>{getTokensToNextLevel()} {t('tokensToGo')}</span>
+            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+              <div className="flex justify-between text-sm mb-2 text-white">
+                <span>Next Level:</span>
+                <span>{getTokensToNextLevel()} tokens to go</span>
               </div>
-              <Progress value={getProgressToNextLevel()} className="h-2" />
+              <Progress value={getProgressToNextLevel()} className="h-2 bg-white/20" />
             </div>
           </div>
         </CardContent>
