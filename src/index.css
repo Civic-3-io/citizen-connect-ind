@@ -180,6 +180,10 @@
     background: var(--gradient-primary);
   }
 
+  .bg-gradient-civic {
+    background: var(--gradient-primary);
+  }
+
   .gradient-tricolor {
     background: var(--gradient-tricolor);
   }
