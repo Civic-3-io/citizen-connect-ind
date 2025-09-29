@@ -17,7 +17,7 @@ import OfflineRequests from "./pages/OfflineRequests";
 import Community from "./pages/Community";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
-import Tokens from "./pages/Tokens";
+import Rewards from "./pages/Rewards";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -40,7 +40,7 @@ const App = () => (
                       <header className="h-12 flex items-center justify-between border-b bg-card px-4">
                         <div className="flex items-center">
                           <SidebarTrigger className="mr-2" />
-                          <h1 className="text-lg font-semibold text-primary">Civic Connect</h1>
+                          <h1 className="text-lg font-semibold text-primary">Civic.io</h1>
                         </div>
                         <LanguageSwitcher />
                       </header>
@@ -55,7 +55,7 @@ const App = () => (
                           <Route path="/community" element={<Community />} />
                           <Route path="/about" element={<About />} />
                           <Route path="/profile" element={<Profile />} />
-                          <Route path="/tokens" element={<Tokens />} />
+                          <Route path="/tokens" element={<Rewards />} />
                           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                           <Route path="*" element={<NotFound />} />
                         </Routes>

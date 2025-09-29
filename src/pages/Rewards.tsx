@@ -26,7 +26,7 @@ interface RecentEarning {
   status: string;
 }
 
-const Tokens = () => {
+const Rewards = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const [userTokens, setUserTokens] = useState<number>(0);
@@ -124,19 +124,23 @@ const Tokens = () => {
   return (
     <div className="container mx-auto px-4 py-6 max-w-4xl">
       {/* Token Balance */}
-      <Card className="mb-6 bg-gradient-to-br from-saffron to-saffron-dark text-white">
+      <Card className="mb-6 bg-saffron text-white border-0 shadow-lg">
         <CardContent className="pt-6">
           <div className="text-center">
             <Coins className="w-12 h-12 mx-auto mb-4 text-white" />
             <h1 className="text-3xl font-bold mb-2 text-white">{userTokens.toLocaleString()} Tokens</h1>
-            <p className="text-white mb-4">Total earnings from civic contributions</p>
+            <p className="text-white/90 mb-4">Total earnings from civic contributions</p>
             
             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
               <div className="flex justify-between text-sm mb-2 text-white">
                 <span>Next Level:</span>
                 <span>{getTokensToNextLevel()} tokens to go</span>
               </div>
-              <Progress value={getProgressToNextLevel()} className="h-2 bg-white/20" />
+              <Progress 
+                value={getProgressToNextLevel()} 
+                className="h-2 bg-white/20" 
+                style={{ '--progress-foreground': 'hsl(var(--background))' } as React.CSSProperties}
+              />
             </div>
           </div>
         </CardContent>
@@ -246,4 +250,4 @@ const Tokens = () => {
   );
 };
 
-export default Tokens;
+export default Rewards;
